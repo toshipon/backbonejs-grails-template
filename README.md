@@ -1,19 +1,27 @@
-# Settings
+# This project is Grails Application template.
 
-## install node
+use client side tecnology is
+* grunt.js
+* backbone.js
+* requirejs
+* jquery
+
+## Settings
+
+### install node
 http://nodejs.org/
 
-## install grunt
+### install grunt
 npm install -g grunt
 
-## init grunt
+### init grunt
 cd web-app
 npm init
 
-# Develop
+## Develop
 
-## watch source
+### watch source
 grunt --config grunt-tasks.js
 
-## optimization r.js for release
+### optimization r.js for release
 grunt --config grunt-tasks.js release
