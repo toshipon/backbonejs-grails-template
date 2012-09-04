@@ -1,5 +1,5 @@
 modules = {
-    application {
-        resource url:'js/application.js'
+    main {
+        resource url: 'build/js/main.js'
     }
 }

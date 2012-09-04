@@ -1,0 +1,15 @@
+{
+  "author": "toshiaki-takahashi <toshiaki-takahashi@navitime.co.jp>",
+  "name": "web-app",
+  "version": "0.0.0",
+  "dependencies": {
+    "grunt-contrib": "0.1.7",
+    "grunt-coffee": "0.0.6",
+    "grunt-requirejs": "0.2.9"
+  },
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}

@@ -1,0 +1,1 @@
+define('text!templates/todos.html',[],function () { return '<div class="view">\n\t<input class="toggle" type="checkbox" <%= completed ? \'checked\' : \'\' %>>\n\t<label><%- title %></label>\n\t<button class="destroy"></button>\n</div>\n<input class="edit" value="<%- title %>">\n';});

@@ -1,16 +1,69 @@
+/*global module:false*/
 module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
-    test: {
-      files: ['test/**/*.js']
+    pkg: '<json:package.json>',
+    meta: {
+      banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
+        '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
+        '<%= pkg.homepage ? "* " + pkg.homepage + "\n" : "" %>' +
+        '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
+        ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
     },
     lint: {
-      files: ['build/**/*.js', 'test/**/*.js']
+      files: ['grunt.js', 'src/**/*.js', 'test/**/*.js']
     },
-    watch: {
-      files: ['<config:coffee.all.src>'],
-      tasks: 'default'
+    qunit: {
+      files: ['test/**/*.html']
+    },
+    concat: {
+      dist: {
+        src: ['<banner:meta.banner>', '<file_strip_banner:src/<%= pkg.name %>.js>'],
+        dest: 'dist/<%= pkg.name %>.js'
+      }
+    },
+    min: {
+      dist: {
+        src: ['<banner:meta.banner>', '<config:concat.dist.dest>'],
+        dest: 'dist/<%= pkg.name %>.min.js'
+      }
+    },
+    coffee: {
+	  app: {
+	    src   : ['src/coffee/**/*.coffee'],
+	    dest  : 'src/js',
+	    options: {
+            bare: true
+        }
+	  },
+	  test:{
+	    src : ['test/spec_coffee/**/*.coffee'],
+	    dest: 'test/spec/',
+	    options: {
+            bare: true
+        }
+	  }
+	},
+    stylus: {
+      app: {
+        src : ['src/stylus/*.styl'],
+        dest: 'src/css/common.css'
+      }
+    },
+	watch: {
+      coffee: {
+        files: ['<config:coffee.app.src>', '<config:coffee.test.src>'],
+        tasks: 'coffee'
+      },
+      stylus: {
+        files: ['<config:stylus.app.src>'],
+        tasks: 'stylus'
+      },
+      lint: {
+    	  files: ['<config:lint.files>'],
+          tasks: 'lint'
+      }
     },
     jshint: {
       options: {
@@ -24,28 +77,57 @@ module.exports = function(grunt) {
         undef: true,
         boss: true,
         eqnull: true,
-        node: true,
-        es5: true
+        browser: true
       },
-      globals: {}
+      globals: {
+        jQuery: true
+      }
     },
-    coffee: {
-    	all: {
-    		src: ['src/coffee/**/*.coffee'],
-    		dest: 'build/js'
-    	}
-    }
+    uglify: {},
+    requirejs: {
+        js : {
+        	clearTarget: true,
+        	dir: 'build',
+            appDir: 'src',
+            baseUrl: 'js',
+            name: 'main',
+            paths: {
+                underscore: 'lib/underscore/underscore',
+                jquery    : 'lib/jquery/jquery.min',
+                backbone  : 'lib/backbone/backbone',
+                require: 'lib/require/require',
+                text: 'lib/require/text'
+            },
+            shim: {
+	            underscore: {
+	            exports: "_"
+	          },
+	            backbone: {
+	            deps: ['underscore', 'jquery'],
+	            exports: 'Backbone'
+	          },
+	            'backbone.localStorage': {
+	            deps: ['backbone'],
+	            exports: 'Backbone'
+	          }
+	        },
+            pragmas: {
+                doExclude: true
+            },
+            skipModuleInsertion: false,
+            optimizeAllPluginResources: true,
+            findNestedDependencies: true
+        }
+     }
   });
-	  
+  
+  grunt.loadNpmTasks('grunt-contrib');
   grunt.loadNpmTasks('grunt-coffee');
   grunt.loadNpmTasks('grunt-requirejs');
 
-  // Load local tasks.
-  grunt.loadTasks('tasks');
-
-
-	  
   // Default task.
-  grunt.registerTask('default', 'coffee');
+//  grunt.registerTask('default', 'lint qunit concat min');
+  grunt.registerTask('default', 'watch');
+  grunt.registerTask('release', 'coffee stylus requirejs:js');
 
 };
