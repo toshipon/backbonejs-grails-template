@@ -12,16 +12,20 @@ client side tecnology is
 http://nodejs.org/
 
 ### install grunt
-npm install -g grunt
+
+    npm install -g grunt
 
 ### init grunt
-cd web-app
-npm init
+
+    cd web-app
+    npm init
 
 ## Develop
 
 ### watch source
-grunt --config grunt-tasks.js
+
+    grunt --config grunt-tasks.js
 
 ### optimization r.js for release
-grunt --config grunt-tasks.js release
+
+    grunt --config grunt-tasks.js release
