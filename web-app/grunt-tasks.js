@@ -34,15 +34,17 @@ module.exports = function(grunt) {
 	    src   : ['src/coffee/**/*.coffee'],
 	    dest  : 'src/js',
 	    options: {
-            bare: true
-        }
+	    	preserve_dirs: true,
+	        base_path: 'src/coffee'
+	    }
 	  },
 	  test:{
 	    src : ['test/spec_coffee/**/*.coffee'],
 	    dest: 'test/spec/',
 	    options: {
-            bare: true
-        }
+	        preserve_dirs: true,
+	        base_path: 'test/spec_coffee'
+	    }
 	  }
 	},
     stylus: {
