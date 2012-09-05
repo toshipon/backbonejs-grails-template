@@ -1,6 +1,6 @@
 # This project is Grails Application template.
 
-client side tecnology is
+client side technology is
 * grunt.js
 * backbone.js
 * requirejs
